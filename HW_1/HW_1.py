@@ -35,7 +35,6 @@ def annihilate_min_deg_poly(matrix):
     
     #Answer returned by null_space() is normalized, this gives
     #us the vector which is not normalized
-    print(np.array(m).T)
     ns = null_space(np.array(m).T)
     ns = ns/ns.max()
     print("basis vector:")
