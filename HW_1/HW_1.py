@@ -26,22 +26,28 @@ def annihilate_min_deg_poly(matrix):
         #we tranpose m to make it so that the columns are the matrix
         #powers of M instead (It was just easier to build the matrix this way in python).
         #We then calculate the null space of this transposed matrix
-        ns = null_space(np.array(m).T)
+        #ns = null_space(np.array(m).T)
         
         #If a basis for the null space exists, we have found the lowest degree
         #solution to AB=0
-        if ns.size > 0:
-            break
+        #if ns.size > 0:
+        #    break
     
     #Answer returned by null_space() is normalized, this gives
     #us the vector which is not normalized
+    print(np.array(m).T)
+    ns = null_space(np.array(m).T)
     ns = ns/ns.max()
-    return np.poly1d(ns[:,0])
+    print("basis vector:")
+    print(ns)
+    return np.poly1d(np.flip(ns[:,0]))
         
 
 #This example demonstrates the utility of the method
+example_matrix = [[1,0,1],[1,0,1],[0,1,0]]
 example_matrix = [[0,1],[1,0]]
 a = annihilate_min_deg_poly(example_matrix)
+print("basis vector as polynomial:")
 print(a)
 
 
