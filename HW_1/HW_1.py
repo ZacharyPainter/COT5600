@@ -27,13 +27,9 @@ def annihilate_min_deg_poly(matrix):
     #Get the null space
     ns = null_space(m)
     
-    #Answer returned by null_space() is normalized, this gives
-    #us the vector which is not normalized
-    ns = ns/ns.max() 
     
     #Python retuns this as a multi-dimensional vector, but poly1d requires
     #a 1d vector, so we take the first column of the basis vector
-    #(There should only ever be a sigle column)
     return np.poly1d(ns[:,0])
         
 
