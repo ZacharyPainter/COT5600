@@ -8,31 +8,38 @@ def vec(matrix):
 
 #Produce the matrix A which has dimensions (n^2)x(n+1),
 #and whose columns are the matrix powers of M
-def get_flat_matrix_powers(matrix):
+def annihilate_min_deg_poly(matrix):
     m = []
-    for i in range(len(matrix) + 1):
+    
+    #We iterate up to the length of the matrix, each loop adding the next
+    #power of the given matrix to the matrix "m." On each loop, we take the
+    #null_space of "m," and if it exists we break from the loop, using the
+    #resulting basis from te null_space method to form our minimal polynomial
+    for i in range(len(matrix)+1):
+        
         #Get the flattened version of the i'th matrix power of the matrix
+        #and append it to the running matrix "m"
         flat_matrix = vec(matrix_power(matrix,i))
         m.append(flat_matrix) 
+        
+        #m is constructed such that the rows of m are the matrix powers of our given matrix: M,
+        #we tranpose m to make it so that the columns are the matrix
+        #powers of M instead (It was just easier to build the matrix this way in python).
+        #We then calculate the null space of this transposed matrix
+        ns = null_space(np.array(m).T)
+        
+        #If a basis for the null space exists, we have found the lowest degree
+        #solution to AB=0
+        if ns.size > 0:
+            break
     
-    #m is constructed such that the rows of m are the matrix powers of our matrix,
-    #we tranpose m to make it so that the columns are the matrix
-    #powers of our matrix instead (It was just easier to build the matrix this way in python)
-    return np.array(m).T
-
-def annihilate_min_deg_poly(matrix):
-    #Calculate all matrix powers
-    m = get_flat_matrix_powers(matrix)
-    
-    #Get the null space
-    ns = null_space(m)
-    
-    
-    #Python retuns this as a multi-dimensional vector, but poly1d requires
-    #a 1d vector, so we take the first column of the basis vector
+    #Answer returned by null_space() is normalized, this gives
+    #us the vector which is not normalized
+    ns = ns/ns.max()
     return np.poly1d(ns[:,0])
         
 
+#This example demonstrates the utility of the method
 example_matrix = [[0,1],[1,0]]
 a = annihilate_min_deg_poly(example_matrix)
 print(a)
